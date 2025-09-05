@@ -5,9 +5,8 @@ function stringLength(string, maxLength) {
   return false;
 }
 
-
 function isPalimdor(string){
-  let simpleString = string.replaceAll(' ', '').toLowerCase();
+  const simpleString = string.replaceAll(' ', '').toLowerCase();
   let stringReverse = '';
 
   for (let i = simpleString.length - 1; i >= 0; i--){
@@ -26,3 +25,7 @@ function numberInString(string){
   }
   return number ? Number(number) : NaN;
 }
+
+stringLength('проверяемая строка', 20);
+isPalimdor('топот');
+numberInString('1 кефир, 0.5 батона');
