@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Vadim Voronin](https://up.htmlacademy.ru/javascript-individual/2/user/2653979).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Вавщик](https://htmlacademy.ru/profile/id1610171).
 
 ---
 
