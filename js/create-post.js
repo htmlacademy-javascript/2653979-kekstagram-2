@@ -38,6 +38,10 @@ const NAMES = [
 ];
 
 const COUNT_PHOTO = 25;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_COMMENTS = 0;
+const MAX_COMMENTS = 30;
 
 function createIdGenerator () {
   let id = 0;
@@ -61,8 +65,8 @@ function createObject(postId){
     id: postId,
     url: `photos/${postId}.jpg`,
     description: getRandomArrayElement(DESCRIPTION),
-    likes: getRandomInteger(15, 200),
-    comments: Array.from({length: getRandomInteger(0, 30)}, ()=> createComment())
+    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+    comments: Array.from({length: getRandomInteger(MIN_COMMENTS, MAX_COMMENTS)}, ()=> createComment())
   };
 }
 
