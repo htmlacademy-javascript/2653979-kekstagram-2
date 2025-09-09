@@ -29,3 +29,17 @@ function numberInString(string){
 stringLength('проверяемая строка', 20);
 isPalimdor('топот');
 numberInString('1 кефир, 0.5 батона');
+
+function getDate(dayStart, dayEnd, timeStart, duration){
+  const convertToMinutes = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  const dayStartMinutes = convertToMinutes(dayStart);
+  const dayEndMinutes = convertToMinutes(dayEnd);
+  const meetingStartMinutes = convertToMinutes(timeStart);
+  const meetingEndMinutes = meetingStartMinutes + duration;
+  return meetingStartMinutes >= dayStartMinutes && meetingEndMinutes <= dayEndMinutes;
+}
+
+getDate('08:00', '17:30', '14:00', 90);
