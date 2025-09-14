@@ -4,7 +4,6 @@ const pictureList = document.querySelector('.pictures');
 const pictureListFragment = document.createDocumentFragment();
 
 posts.forEach((element) => {
-  console.log('sdfsdf')
   const post = pictureTemplate.cloneNode(true);
   post.querySelector('.picture__img').src = element.url;
   post.querySelector('.picture__img').alt = element.description;

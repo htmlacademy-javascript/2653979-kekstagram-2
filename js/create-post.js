@@ -75,5 +75,5 @@ function getPhoto(){
   return Array.from({ length: COUNT_PHOTO }, () => createObject(newId()));
 }
 const posts = getPhoto();
-console.log(posts);
+
 export {posts};
