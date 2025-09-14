@@ -74,5 +74,6 @@ function getPhoto(){
   const newId = createIdGenerator();
   return Array.from({ length: COUNT_PHOTO }, () => createObject(newId()));
 }
-
-getPhoto();
+const posts = getPhoto();
+console.log(posts);
+export {posts};
