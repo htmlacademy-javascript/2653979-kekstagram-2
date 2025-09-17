@@ -1,15 +1,20 @@
-import {posts} from './create-post.js';
+import { posts } from './create-post.js';
+import { callDrawBigPicture } from './drawBigPictures.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureList = document.querySelector('.pictures');
 const pictureListFragment = document.createDocumentFragment();
 
-posts.forEach((element) => {
+posts.forEach((postData) => {
   const post = pictureTemplate.cloneNode(true);
-  post.querySelector('.picture__img').src = element.url;
-  post.querySelector('.picture__img').alt = element.description;
-  post.querySelector('.picture__likes').textContent = element.likes;
-  post.querySelector('.picture__comments').textContent = element.comments.length;
-  pictureListFragment.appendChild(post);
+  post.querySelector('.picture__img').src = postData.url;
+  post.querySelector('.picture__img').alt = postData.description;
+  post.querySelector('.picture__likes').textContent = postData.likes;
+  post.querySelector('.picture__comments').textContent = postData.comments.length;
+
+  callDrawBigPicture(post, postData);
+
+  pictureListFragment.append(post);
 });
 
 pictureList.append(pictureListFragment);
