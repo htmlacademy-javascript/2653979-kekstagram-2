@@ -1,5 +1,5 @@
-import {getRandomArrayElement} from './util.js';
-import {getRandomInteger} from './util.js';
+import {getRandomArrayElement} from './utils.js';
+import {getRandomInteger} from './utils.js';
 
 const COMMENTS = [
   'Всё отлично!',
@@ -54,7 +54,7 @@ function createIdGenerator () {
 function createComment(){
   return {
     id: crypto.randomUUID(),
-    avatar: `img/avatar-${getRandomInteger(0, 6)}.svg`,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: Array.from({length: getRandomInteger(1, 2)}, ()=> getRandomArrayElement(COMMENTS)).join(' '),
     name: getRandomArrayElement(NAMES),
   };
