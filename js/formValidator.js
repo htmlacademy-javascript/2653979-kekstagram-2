@@ -1,4 +1,5 @@
 import { isEscapeKey } from './utils.js';
+import { publishPost } from './api.js';
 const fileInput = document.querySelector('.img-upload__input');
 const modalForm = document.querySelector('.img-upload__form');
 const modalCloseBtn = document.querySelector('.img-upload__cancel');
@@ -113,6 +114,8 @@ modalForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    modalForm.submit();
+    publishPost(modalForm);
   }
 });
+
+export {onModalClose};
