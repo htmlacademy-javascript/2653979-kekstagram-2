@@ -10,11 +10,22 @@ const errorFragment = document.createDocumentFragment();
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successFragment = document.createDocumentFragment();
 
-function drawMiniPictures() {
+function drawMiniPictures(callback = null, filterCallback = null, limit = null) {
   fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
     .then((response) => response.json())
     .then((posts) => {
-      posts.forEach((postData) => {
+      // Применяем фильтр если он передан
+      let processedPosts = posts;
+      if (filterCallback && typeof filterCallback === 'function') {
+        processedPosts = filterCallback(posts);
+      }
+
+      // Применяем лимит если он передан
+      if (limit && limit > 0) {
+        processedPosts = processedPosts.slice(0, limit);
+      }
+
+      processedPosts.forEach((postData) => {
         const post = pictureTemplate.cloneNode(true);
         post.querySelector('.picture__img').src = postData.url;
         post.querySelector('.picture__img').alt = postData.description;
@@ -27,6 +38,11 @@ function drawMiniPictures() {
       });
 
       pictureList.append(pictureListFragment);
+    })
+    .then(() => {
+      if (callback && typeof callback === 'function') {
+        callback();
+      }
     })
     .catch(() => {
       const errorMassage = errorTemplate.cloneNode(true);
