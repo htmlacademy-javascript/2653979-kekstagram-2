@@ -3,6 +3,9 @@ import { publishPost } from './api.js';
 const fileInput = document.querySelector('.img-upload__input');
 const modalForm = document.querySelector('.img-upload__form');
 const modalCloseBtn = document.querySelector('.img-upload__cancel');
+const imgPreview = document.querySelector('.img-upload__preview img');
+const imgMiniPreview = document.querySelectorAll('.effects__preview');
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const hashRegular = new RegExp('^#[a-zа-яё0-9]{1,19}$', 'i');
 const hashtagField = document.querySelector('.text__hashtags');
@@ -26,6 +29,16 @@ const onFileInputChange = () => {
   modalCloseBtn.addEventListener('click', onModalClose);
   window.addEventListener('keydown', onModalEscKeydown);
   fileInput.removeEventListener('change', onFileInputChange);
+
+  const file = fileInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+    imgMiniPreview.forEach((element) => {
+      element.style.backgroundImage = `url("${imgPreview.src}")`;
+    });
+  }
 };
 
 function onModalClose() {
@@ -45,7 +58,7 @@ const pristine = new Pristine(modalForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 }, false);
 
-function validateHashContent (value) {
+function validateHashContent(value) {
   if (value.trim() === '') {
     return true;
   } else {
@@ -59,7 +72,7 @@ function validateHashContent (value) {
   return true;
 }
 
-function validateHashAmount (value) {
+function validateHashAmount(value) {
   if (value.trim() === '') {
     return true;
   } else {
@@ -70,7 +83,7 @@ function validateHashAmount (value) {
   }
 }
 
-function validateHashRepeat (value) {
+function validateHashRepeat(value) {
   if (value.trim() === '') {
     return true;
   } else {
@@ -118,4 +131,4 @@ modalForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {onModalClose};
+export { onModalClose };
