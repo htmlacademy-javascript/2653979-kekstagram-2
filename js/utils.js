@@ -12,8 +12,7 @@ function isEscapeKey(evt) {
 }
 
 function removePictures() {
-  const pictures = document.querySelectorAll('.picture');
-  pictures.forEach((element) => {
+  document.querySelectorAll('.picture').forEach((element) => {
     element.remove();
   });
 }
@@ -22,7 +21,6 @@ function getRandomPosts(posts) {
   return posts.sort(() => Math.random() - 0.5);
 }
 
-// Функция для получения случайных постов
 function getRandomPostsFilter(posts) {
   const shuffled = [...posts];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -32,7 +30,6 @@ function getRandomPostsFilter(posts) {
   return shuffled;
 }
 
-// Функция для сортировки по убыванию количества комментариев
 function getDiscussedPosts(posts) {
   return [...posts].sort((a, b) => b.comments.length - a.comments.length);
 }
