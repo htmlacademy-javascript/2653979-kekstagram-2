@@ -4,23 +4,23 @@ import { isEscapeKey } from './utils.js';
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureList = document.querySelector('.pictures');
 const pictureListFragment = document.createDocumentFragment();
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const errorFragment = document.createDocumentFragment();
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successFragment = document.createDocumentFragment();
 
+const uploadBtn = document.querySelector('.img-upload__submit');
+
 function drawMiniPictures(callback = null, filterCallback = null, limit = null) {
   fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
     .then((response) => response.json())
     .then((posts) => {
-      // Применяем фильтр если он передан
       let processedPosts = posts;
       if (filterCallback && typeof filterCallback === 'function') {
         processedPosts = filterCallback(posts);
       }
 
-      // Применяем лимит если он передан
       if (limit && limit > 0) {
         processedPosts = processedPosts.slice(0, limit);
       }
@@ -46,23 +46,23 @@ function drawMiniPictures(callback = null, filterCallback = null, limit = null) 
     })
     .catch(() => {
       const errorMassage = errorTemplate.cloneNode(true);
-      errorMassage.querySelector('.error__title').textContent = 'Ошибка загрузки файлов';
       errorFragment.append(errorMassage);
       document.body.append(errorFragment);
-      const removeTimeoutId = setTimeout(() => {
+      setTimeout(() => {
         errorMassage.remove();
       }, 5000);
 
-      errorMassage.querySelector('.error__button').addEventListener('click', () => {
-        clearTimeout(removeTimeoutId);
-        errorMassage.remove();
-        drawMiniPictures();
-      });
+      // errorMassage.querySelector('.error__button').addEventListener('click', () => {
+      //   clearTimeout(removeTimeoutId);
+      //   errorMassage.remove();
+      //   drawMiniPictures();
+      // });
     });
 }
 
 function publishPost(form) {
   const formData = new FormData(form);
+  uploadBtn.disabled = true;
   fetch(
     'https://31.javascript.htmlacademy.pro/kekstagram',
     {
@@ -74,11 +74,11 @@ function publishPost(form) {
       const succesMessage = successTemplate.cloneNode(true);
       successFragment.append(succesMessage);
       document.body.append(successFragment);
-      const removeSuccessMessage = () => {
+      function removeSuccessMessage() {
         succesMessage.remove();
         window.removeEventListener('click', outsideClickListener);
         window.removeEventListener('keydown', escapeHandler);
-      };
+      }
       function outsideClickListener(evt) {
         if (!succesMessage.querySelector('.success__inner').contains(evt.target)) {
           removeSuccessMessage();
@@ -112,6 +112,9 @@ function publishPost(form) {
         errorMassage.remove();
         drawMiniPictures();
       });
+    })
+    .finally(() => {
+      uploadBtn.disabled = false;
     });
 }
 

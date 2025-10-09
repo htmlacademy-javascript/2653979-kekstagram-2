@@ -57,48 +57,52 @@ const pristine = new Pristine(modalForm, {
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 }, false);
-
 function validateHashContent(value) {
   if (value.trim() === '') {
     return true;
-  } else {
-    const hashtags = value.split(' ');
-    for (const hashtag of hashtags) {
-      if (!hashRegular.test(hashtag)) {
-        return false;
-      }
+  }
+
+  const hashtags = splitHashtags(value);
+
+  for (const hashtag of hashtags) {
+    // Проверяем что хэштег не пустой и соответствует регулярке
+    if (!hashtag || !hashRegular.test(hashtag)) {
+      return false;
     }
   }
   return true;
+}
+function splitHashtags(value) {
+  return value.trim().split(/\s+/).filter((tag) => tag !== '');
 }
 
 function validateHashAmount(value) {
   if (value.trim() === '') {
     return true;
-  } else {
-    const hashtags = value.split(' ');
-    if (hashtags.length <= 5) {
-      return true;
-    }
   }
+
+  const hashtags = splitHashtags(value);
+  return hashtags.length <= 5;
 }
 
 function validateHashRepeat(value) {
   if (value.trim() === '') {
     return true;
-  } else {
-    const hashtags = value.split(' ');
-    const hashtagsLowerCase = hashtags.map((str) => str.toLowerCase());
-    for (let i = 0; i < hashtagsLowerCase.length; i++) {
-      let j = i + 1;
-
-      for (j; j < hashtagsLowerCase.length; j++) {
-        if (hashtagsLowerCase[i].toString() === hashtagsLowerCase[j].toString()) {
-          return false;
-        }
-      }
-    }
   }
+
+  const hashtags = splitHashtags(value);
+  const hashtagsLowerCase = hashtags.map((str) => str.toLowerCase());
+
+  // Используем Set для поиска дубликатов
+  const uniqueHashtags = new Set();
+
+  for (const hashtag of hashtagsLowerCase) {
+    if (uniqueHashtags.has(hashtag)) {
+      return false;
+    }
+    uniqueHashtags.add(hashtag);
+  }
+
   return true;
 }
 
@@ -127,6 +131,7 @@ modalForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
+    pristine.reset();
     publishPost(modalForm);
   }
 });
