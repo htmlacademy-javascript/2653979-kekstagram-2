@@ -42,6 +42,7 @@ scaleMinus.addEventListener('click', () => {
     scaleValue.value = `${scale}%`;
     imageToScale.style.transform = `scale(${scale}%`;
   }
+
 });
 
 noUiSlider.create(sliderElement, {
