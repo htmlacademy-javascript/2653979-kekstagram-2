@@ -2,7 +2,6 @@ const scalePlus = document.querySelector('.scale__control--bigger');
 const scaleMinus = document.querySelector('.scale__control--smaller');
 const scaleValue = document.querySelector('.scale__control--value');
 const imageToScale = document.querySelector('.img-upload__preview img');
-
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectNone = document.querySelector('#effect-none');
