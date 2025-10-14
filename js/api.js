@@ -51,12 +51,6 @@ function drawMiniPictures(callback = null, filterCallback = null, limit = null) 
       setTimeout(() => {
         errorMassage.remove();
       }, 5000);
-
-      // errorMassage.querySelector('.error__button').addEventListener('click', () => {
-      //   clearTimeout(removeTimeoutId);
-      //   errorMassage.remove();
-      //   drawMiniPictures();
-      // });
     });
 }
 

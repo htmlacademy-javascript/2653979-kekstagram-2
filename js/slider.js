@@ -1,3 +1,5 @@
+const SCALE_STEP = 25;
+let scale = 100;
 const scalePlus = document.querySelector('.scale__control--bigger');
 const scaleMinus = document.querySelector('.scale__control--smaller');
 const scaleValue = document.querySelector('.scale__control--value');
@@ -11,9 +13,6 @@ const effectMarvin = document.querySelector('#effect-marvin');
 const effectPhobos = document.querySelector('#effect-phobos');
 const effectHeat = document.querySelector('#effect-heat');
 const inputEffect = document.querySelector('.effect-level__value');
-
-const SCALE_STEP = 25;
-let scale = 100;
 
 const formOpener = document.querySelector('.img-upload__start');
 formOpener.addEventListener('click', () => {

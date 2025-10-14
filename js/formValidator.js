@@ -65,7 +65,6 @@ function validateHashContent(value) {
   const hashtags = splitHashtags(value);
 
   for (const hashtag of hashtags) {
-    // Проверяем что хэштег не пустой и соответствует регулярке
     if (!hashtag || !hashRegular.test(hashtag)) {
       return false;
     }
@@ -93,7 +92,6 @@ function validateHashRepeat(value) {
   const hashtags = splitHashtags(value);
   const hashtagsLowerCase = hashtags.map((str) => str.toLowerCase());
 
-  // Используем Set для поиска дубликатов
   const uniqueHashtags = new Set();
 
   for (const hashtag of hashtagsLowerCase) {

@@ -1,11 +1,10 @@
 import { drawMiniPictures } from './api.js';
 import { removePictures, getRandomPosts, getDiscussedPosts } from './utils.js';
+let timeoutId = null;
 const UPDATE_TIMER = 500;
 
 const imgFiltersBlock = document.querySelector('.img-filters');
 const filterBtns = document.querySelectorAll('.img-filters__button');
-
-let timeoutId = null;
 
 drawMiniPictures(drawNewPictures);
 
