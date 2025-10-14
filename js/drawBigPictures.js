@@ -1,4 +1,7 @@
 import { isEscapeKey } from './utils.js';
+const LOAD_COMMENTS_COUNT = 5;
+let currentComments = [];
+let shownCommentsCount = 0;
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = document.querySelector('.big-picture__cancel');
@@ -8,10 +11,6 @@ const commentsList = document.querySelector('.social__comments');
 const socialCaption = document.querySelector('.social__caption');
 const shownCountElement = commentCount.querySelector('.social__comment-shown-count');
 const totalCountElement = commentCount.querySelector('.social__comment-total-count');
-
-const LOAD_COMMENTS_COUNT = 5;
-let currentComments = [];
-let shownCommentsCount = 0;
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {

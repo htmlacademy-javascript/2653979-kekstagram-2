@@ -1,8 +1,9 @@
+const SCALE_STEP = 25;
+let scale = 100;
 const scalePlus = document.querySelector('.scale__control--bigger');
 const scaleMinus = document.querySelector('.scale__control--smaller');
 const scaleValue = document.querySelector('.scale__control--value');
-const imageToScale = document.querySelector('.img-upload__preview');
-
+const imageToScale = document.querySelector('.img-upload__preview img');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectNone = document.querySelector('#effect-none');
@@ -11,9 +12,7 @@ const effectSepia = document.querySelector('#effect-sepia');
 const effectMarvin = document.querySelector('#effect-marvin');
 const effectPhobos = document.querySelector('#effect-phobos');
 const effectHeat = document.querySelector('#effect-heat');
-
-const SCALE_STEP = 25;
-let scale = 100;
+const inputEffect = document.querySelector('.effect-level__value');
 
 const formOpener = document.querySelector('.img-upload__start');
 formOpener.addEventListener('click', () => {
@@ -31,16 +30,17 @@ if (effectNone.checked) {
 scalePlus.addEventListener('click', () => {
   if (scale < 100) {
     scale += SCALE_STEP;
-    scaleValue.value = scale;
+    scaleValue.value = `${scale}%`;
     imageToScale.style.transform = `scale(${scale}%`;
   }
 });
 scaleMinus.addEventListener('click', () => {
   if (scale > 25) {
     scale -= SCALE_STEP;
-    scaleValue.value = scale;
+    scaleValue.value = `${scale}%`;
     imageToScale.style.transform = `scale(${scale}%`;
   }
+
 });
 
 noUiSlider.create(sliderElement, {
@@ -65,7 +65,9 @@ effectChrome.addEventListener('change', (evt) => {
       { range: { min: 0, max: 1, }, start: 1, step: 0.1, }
     );
     sliderElement.noUiSlider.on('update', () => {
-      imageToScale.style.filter = `grayscale(${sliderElement.noUiSlider.get()})`;
+      const sliderValue = sliderElement.noUiSlider.get();
+      imageToScale.style.filter = `grayscale(${sliderValue})`;
+      inputEffect.value = parseFloat(sliderValue).toString();
     });
   }
 });
@@ -78,7 +80,9 @@ effectSepia.addEventListener('change', (evt) => {
     );
 
     sliderElement.noUiSlider.on('update', () => {
-      imageToScale.style.filter = `sepia(${sliderElement.noUiSlider.get()})`;
+      const sliderValue = sliderElement.noUiSlider.get();
+      imageToScale.style.filter = `sepia(${sliderValue})`;
+      inputEffect.value = parseFloat(sliderValue).toString();
     });
   }
 });
@@ -91,7 +95,9 @@ effectMarvin.addEventListener('change', (evt) => {
     );
 
     sliderElement.noUiSlider.on('update', () => {
-      imageToScale.style.filter = `invert(${sliderElement.noUiSlider.get()}%)`;
+      const sliderValue = sliderElement.noUiSlider.get();
+      imageToScale.style.filter = `invert(${sliderValue}%)`;
+      inputEffect.value = parseFloat(sliderValue).toString();
     });
   }
 });
@@ -104,7 +110,9 @@ effectPhobos.addEventListener('change', (evt) => {
     );
 
     sliderElement.noUiSlider.on('update', () => {
-      imageToScale.style.filter = `blur(${sliderElement.noUiSlider.get()}px)`;
+      const sliderValue = sliderElement.noUiSlider.get();
+      imageToScale.style.filter = `blur(${sliderValue}px)`;
+      inputEffect.value = parseFloat(sliderValue).toString();
     });
   }
 });
@@ -117,7 +125,9 @@ effectHeat.addEventListener('change', (evt) => {
     );
 
     sliderElement.noUiSlider.on('update', () => {
-      imageToScale.style.filter = `brightness(${sliderElement.noUiSlider.get()})`;
+      const sliderValue = sliderElement.noUiSlider.get();
+      imageToScale.style.filter = `brightness(${sliderValue})`;
+      inputEffect.value = parseFloat(sliderValue).toString();
     });
   }
 });

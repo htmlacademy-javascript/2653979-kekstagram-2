@@ -1,11 +1,10 @@
 import { drawMiniPictures } from './api.js';
 import { removePictures, getRandomPosts, getDiscussedPosts } from './utils.js';
+let timeoutId = null;
+const UPDATE_TIMER = 500;
 
 const imgFiltersBlock = document.querySelector('.img-filters');
 const filterBtns = document.querySelectorAll('.img-filters__button');
-const UPDATE_TIMER = 500;
-
-let timeoutId = null;
 
 drawMiniPictures(drawNewPictures);
 
@@ -16,18 +15,28 @@ function drawNewPictures() {
   const randomFilterBtn = document.querySelector('#filter-random');
   const discussedFilterBtn = document.querySelector('#filter-discussed');
 
-  defaultFilterBtn.addEventListener('click', () => {
-    switchBtns(defaultFilterBtn);
+  setupDefaultFilter(defaultFilterBtn);
+  setupRandomFilter(randomFilterBtn);
+  setupDiscussedFilter(discussedFilterBtn);
+}
+
+function setupDefaultFilter(button) {
+  button.addEventListener('click', () => {
+    switchBtns(button);
     applyFilter(() => drawMiniPictures());
   });
+}
 
-  randomFilterBtn.addEventListener('click', () => {
-    switchBtns(randomFilterBtn);
+function setupRandomFilter(button) {
+  button.addEventListener('click', () => {
+    switchBtns(button);
     applyFilter(() => drawMiniPictures(null, getRandomPosts, 10));
   });
+}
 
-  discussedFilterBtn.addEventListener('click', () => {
-    switchBtns(discussedFilterBtn);
+function setupDiscussedFilter(button) {
+  button.addEventListener('click', () => {
+    switchBtns(button);
     applyFilter(() => drawMiniPictures(null, getDiscussedPosts));
   });
 }
