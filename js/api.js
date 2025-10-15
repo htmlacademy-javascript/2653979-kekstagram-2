@@ -6,6 +6,7 @@ const pictureList = document.querySelector('.pictures');
 const pictureListFragment = document.createDocumentFragment();
 const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const errorFragment = document.createDocumentFragment();
+const uploadForm = document.querySelector('.img-upload__form');
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successFragment = document.createDocumentFragment();
@@ -91,6 +92,7 @@ function publishPost(form) {
       }, 0);
     })
     .then(() => {
+      uploadForm.reset();
       onModalClose();
     }).catch(() => {
       const errorMassage = errorTemplate.cloneNode(true);
