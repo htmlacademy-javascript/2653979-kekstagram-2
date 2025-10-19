@@ -1,11 +1,12 @@
 import { isEscapeKey } from './utils.js';
 import { publishPost } from './api.js';
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const fileInput = document.querySelector('.img-upload__input');
 const modalForm = document.querySelector('.img-upload__form');
 const modalCloseBtn = document.querySelector('.img-upload__cancel');
 const imgPreview = document.querySelector('.img-upload__preview img');
-const imgMiniPreview = document.querySelectorAll('.effects__preview');
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const imgMiniPreviews = document.querySelectorAll('.effects__preview');
 
 const hashRegular = new RegExp('^#[a-zа-яё0-9]{1,19}$', 'i');
 const hashtagField = document.querySelector('.text__hashtags');
@@ -35,7 +36,7 @@ const onFileInputChange = () => {
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
     imgPreview.src = URL.createObjectURL(file);
-    imgMiniPreview.forEach((element) => {
+    imgMiniPreviews.forEach((element) => {
       element.style.backgroundImage = `url("${imgPreview.src}")`;
     });
   }
@@ -57,34 +58,31 @@ const pristine = new Pristine(modalForm, {
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 }, false);
-function validateHashContent(value) {
+
+const splitHashtags = (value) => value.trim().split(/\s+/).filter((tag) => tag !== '');
+
+const validateHashContent = (value) => {
   if (value.trim() === '') {
     return true;
   }
-
   const hashtags = splitHashtags(value);
-
   for (const hashtag of hashtags) {
     if (!hashtag || !hashRegular.test(hashtag)) {
       return false;
     }
   }
   return true;
-}
-function splitHashtags(value) {
-  return value.trim().split(/\s+/).filter((tag) => tag !== '');
-}
+};
 
-function validateHashAmount(value) {
+const validateHashAmount = (value) => {
   if (value.trim() === '') {
     return true;
   }
-
   const hashtags = splitHashtags(value);
   return hashtags.length <= 5;
-}
+};
 
-function validateHashRepeat(value) {
+const validateHashRepeat = (value) => {
   if (value.trim() === '') {
     return true;
   }
@@ -102,7 +100,7 @@ function validateHashRepeat(value) {
   }
 
   return true;
-}
+};
 
 pristine.addValidator(
   commentField,
@@ -135,3 +133,4 @@ modalForm.addEventListener('submit', (evt) => {
 });
 
 export { onModalClose };
+export { onModalEscKeydown };

@@ -1,11 +1,6 @@
-function stringLength(string, maxLength) {
-  if (string.length <= maxLength){
-    return true;
-  }
-  return false;
-}
+const stringLength = (string, maxLength) => string.length <= maxLength;
 
-function isPalimdor(string){
+const isPalimdor = (string) =>{
   const simpleString = string.replaceAll(' ', '').toLowerCase();
   let stringReverse = '';
 
@@ -13,9 +8,9 @@ function isPalimdor(string){
     stringReverse += simpleString[i];
   }
   return stringReverse === simpleString;
-}
+};
 
-function numberInString(string){
+const numberInString = (string) => {
   string.toString();
   let number = '';
   for (let i = 0; i <= string.length; i++){
@@ -24,13 +19,13 @@ function numberInString(string){
     }
   }
   return number ? Number(number) : NaN;
-}
+};
 
 stringLength('проверяемая строка', 20);
 isPalimdor('топот');
 numberInString('1 кефир, 0.5 батона');
 
-function getDate(dayStart, dayEnd, timeStart, duration){
+const getDate = (dayStart, dayEnd, timeStart, duration) =>{
   const convertToMinutes = (timeStr) => {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;
@@ -40,6 +35,6 @@ function getDate(dayStart, dayEnd, timeStart, duration){
   const meetingStartMinutes = convertToMinutes(timeStart);
   const meetingEndMinutes = meetingStartMinutes + duration;
   return meetingStartMinutes >= dayStartMinutes && meetingEndMinutes <= dayEndMinutes;
-}
+};
 
 getDate('08:00', '17:30', '14:00', 90);

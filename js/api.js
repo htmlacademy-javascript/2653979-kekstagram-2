@@ -1,11 +1,14 @@
 import { callDrawBigPicture } from './drawBigPictures.js';
 import { onModalClose } from './formValidator.js';
+import { onModalEscKeydown } from './formValidator.js';
 import { isEscapeKey } from './utils.js';
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureList = document.querySelector('.pictures');
 const pictureListFragment = document.createDocumentFragment();
 const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const errorFragment = document.createDocumentFragment();
+const errorPostTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorPostFragment = document.createDocumentFragment();
 const uploadForm = document.querySelector('.img-upload__form');
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -13,7 +16,7 @@ const successFragment = document.createDocumentFragment();
 
 const uploadBtn = document.querySelector('.img-upload__submit');
 
-function drawMiniPictures(callback = null, filterCallback = null, limit = null) {
+const drawMiniPictures = (callback = null, filterCallback = null, limit = null) => {
   fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
     .then((response) => response.json())
     .then((posts) => {
@@ -53,66 +56,85 @@ function drawMiniPictures(callback = null, filterCallback = null, limit = null) 
         errorMassage.remove();
       }, 5000);
     });
+};
+
+const onOutsideElementClick = (evt, succesMessage) => {
+  if (!succesMessage.querySelector('.success__inner').contains(evt.target)) {
+    onSuccessMessageRemove(succesMessage);
+  }
+};
+
+const onEscKeydown = (evt, succesMessage) => {
+  if (isEscapeKey(evt)) {
+    onSuccessMessageRemove(succesMessage);
+  }
+};
+
+function onSuccessMessageRemove(succesMessage) {
+  succesMessage.remove();
+  window.removeEventListener('click', (evt) => onOutsideElementClick(evt, succesMessage));
+  window.removeEventListener('keydown', (evt) => onEscKeydown(evt, succesMessage));
 }
 
-function publishPost(form) {
+const onErrorEscKeydown = (evt, errorMassage) => {
+  if (isEscapeKey(evt)) {
+    onErrorMessageRemove(errorMassage);
+    window.addEventListener('keydown', onModalEscKeydown);
+  }
+};
+
+const onOutsideErrorClick = (evt, errorMassage) => {
+  if (!errorMassage.querySelector('.error__inner').contains(evt.target)) {
+    onErrorMessageRemove(errorMassage);
+    window.addEventListener('keydown', onModalEscKeydown);
+  }
+};
+
+function onErrorMessageRemove(errorMassage) {
+  errorMassage.remove();
+  window.removeEventListener('click', (evt) => onOutsideErrorClick(evt, errorMassage));
+  window.removeEventListener('keydown', (evt) => onErrorEscKeydown(evt, errorMassage));
+}
+
+const publishPost = (form) => {
   const formData = new FormData(form);
   uploadBtn.disabled = true;
-  fetch(
-    'https://31.javascript.htmlacademy.pro/kekstagram',
-    {
-      method: 'POST',
-      body: formData,
-    },
-  )
+
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+    method: 'POST',
+    body: formData,
+  })
     .then(() => {
       const succesMessage = successTemplate.cloneNode(true);
       successFragment.append(succesMessage);
       document.body.append(successFragment);
-      function removeSuccessMessage() {
-        succesMessage.remove();
-        window.removeEventListener('click', outsideClickListener);
-        window.removeEventListener('keydown', escapeHandler);
-      }
-      function outsideClickListener(evt) {
-        if (!succesMessage.querySelector('.success__inner').contains(evt.target)) {
-          removeSuccessMessage();
-        }
-      }
 
-      succesMessage.querySelector('.success__button').addEventListener('click', removeSuccessMessage);
-      function escapeHandler(evt) {
-        if (isEscapeKey(evt)) {
-          removeSuccessMessage();
-        }
-      }
-      window.addEventListener('keydown', escapeHandler);
-      setTimeout(() => {
-        window.addEventListener('click', outsideClickListener);
-      }, 0);
+      succesMessage.querySelector('.success__button').addEventListener('click', () => onSuccessMessageRemove(succesMessage));
+
+      window.addEventListener('keydown', (evt) => onEscKeydown(evt, succesMessage));
+      window.addEventListener('click', (evt) => onOutsideElementClick(evt, succesMessage));
     })
     .then(() => {
       uploadForm.reset();
       onModalClose();
-    }).catch(() => {
-      const errorMassage = errorTemplate.cloneNode(true);
-      errorMassage.querySelector('.error__title').textContent = 'Ошибка загрузки файла';
-      errorFragment.append(errorMassage);
-      document.body.append(errorFragment);
-      const removeTimeoutId = setTimeout(() => {
-        errorMassage.remove();
-      }, 5000);
+    })
+    .catch(() => {
+      const errorMassage = errorPostTemplate.cloneNode(true);
+      errorPostFragment.append(errorMassage);
+      document.body.append(errorPostFragment);
+      window.removeEventListener('keydown', onModalEscKeydown);
+
+      window.addEventListener('keydown', (evt) => onErrorEscKeydown(evt, errorMassage));
+      window.addEventListener('click', (evt) => onOutsideErrorClick(evt, errorMassage));
 
       errorMassage.querySelector('.error__button').addEventListener('click', () => {
-        clearTimeout(removeTimeoutId);
+        window.addEventListener('keydown', onModalEscKeydown);
         errorMassage.remove();
-        drawMiniPictures();
       });
     })
     .finally(() => {
       uploadBtn.disabled = false;
     });
-}
-
+};
 export { drawMiniPictures };
 export { publishPost };
