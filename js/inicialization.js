@@ -1,47 +1,19 @@
 import { drawMiniPictures } from './api.js';
 import { removePictures, getRandomPosts, getDiscussedPosts } from './utils.js';
-let timeoutId = null;
 const UPDATE_TIMER = 500;
+let timeoutId = null;
 
 const imgFiltersBlock = document.querySelector('.img-filters');
 const filterBtns = document.querySelectorAll('.img-filters__button');
 
-drawMiniPictures(drawNewPictures);
-
-function drawNewPictures() {
-  imgFiltersBlock.classList.remove('img-filters--inactive');
-
-  const defaultFilterBtn = document.querySelector('#filter-default');
-  const randomFilterBtn = document.querySelector('#filter-random');
-  const discussedFilterBtn = document.querySelector('#filter-discussed');
-
-  setupDefaultFilter(defaultFilterBtn);
-  setupRandomFilter(randomFilterBtn);
-  setupDiscussedFilter(discussedFilterBtn);
-}
-
-function setupDefaultFilter(button) {
-  button.addEventListener('click', () => {
-    switchBtns(button);
-    applyFilter(() => drawMiniPictures());
+const switchBtns = (activeBtn) => {
+  filterBtns.forEach((element) => {
+    element.classList.remove('img-filters__button--active');
   });
-}
+  activeBtn.classList.add('img-filters__button--active');
+};
 
-function setupRandomFilter(button) {
-  button.addEventListener('click', () => {
-    switchBtns(button);
-    applyFilter(() => drawMiniPictures(null, getRandomPosts, 10));
-  });
-}
-
-function setupDiscussedFilter(button) {
-  button.addEventListener('click', () => {
-    switchBtns(button);
-    applyFilter(() => drawMiniPictures(null, getDiscussedPosts));
-  });
-}
-
-function applyFilter(callback) {
+const applyFilter = (callback) => {
   if (timeoutId) {
     clearTimeout(timeoutId);
   }
@@ -51,11 +23,39 @@ function applyFilter(callback) {
     callback();
     timeoutId = null;
   }, UPDATE_TIMER);
-}
+};
 
-function switchBtns(activeBtn) {
-  filterBtns.forEach((element) => {
-    element.classList.remove('img-filters__button--active');
+const setupDefaultFilter = (button) => {
+  button.addEventListener('click', () => {
+    switchBtns(button);
+    applyFilter(() => drawMiniPictures());
   });
-  activeBtn.classList.add('img-filters__button--active');
-}
+};
+
+const setupRandomFilter = (button) => {
+  button.addEventListener('click', () => {
+    switchBtns(button);
+    applyFilter(() => drawMiniPictures(null, getRandomPosts, 10));
+  });
+};
+
+const setupDiscussedFilter = (button) => {
+  button.addEventListener('click', () => {
+    switchBtns(button);
+    applyFilter(() => drawMiniPictures(null, getDiscussedPosts));
+  });
+};
+
+const drawNewPictures = () => {
+  imgFiltersBlock.classList.remove('img-filters--inactive');
+
+  const defaultFilterBtn = document.querySelector('#filter-default');
+  const randomFilterBtn = document.querySelector('#filter-random');
+  const discussedFilterBtn = document.querySelector('#filter-discussed');
+
+  setupDefaultFilter(defaultFilterBtn);
+  setupRandomFilter(randomFilterBtn);
+  setupDiscussedFilter(discussedFilterBtn);
+};
+
+drawMiniPictures(drawNewPictures);

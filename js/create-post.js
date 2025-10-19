@@ -1,5 +1,5 @@
-import {getRandomArrayElement} from './utils.js';
-import {getRandomInteger} from './utils.js';
+import { getRandomArrayElement } from './utils.js';
+import { getRandomInteger } from './utils.js';
 
 const COMMENTS = [
   'Всё отлично!',
@@ -9,7 +9,7 @@ const COMMENTS = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Фотография, запечатлевающая мгновение нежности и тепла в отношениях.',
   'Игра света и тени создает загадочную атмосферу, привлекающую взгляд.',
   'Яркие цвета и текстуры создают визуальный взрыв, пробуждающий чувства и эмоции.',
@@ -43,37 +43,34 @@ const MAX_LIKES = 200;
 const MIN_COMMENTS = 0;
 const MAX_COMMENTS = 30;
 
-function createIdGenerator () {
+const createIdGenerator = () => {
   let id = 0;
   return function () {
-    id ++;
+    id++;
     return id;
   };
-}
+};
 
-function createComment(){
-  return {
-    id: crypto.randomUUID(),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: Array.from({length: getRandomInteger(1, 2)}, ()=> getRandomArrayElement(COMMENTS)).join(' '),
-    name: getRandomArrayElement(NAMES),
-  };
-}
+const createComment = () => ({
+  id: crypto.randomUUID(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: Array.from({ length: getRandomInteger(1, 2) }, () => getRandomArrayElement(COMMENTS)).join(' '),
+  name: getRandomArrayElement(NAMES),
+});
 
-function createObject(postId){
-  return {
-    id: postId,
-    url: `photos/${postId}.jpg`,
-    description: getRandomArrayElement(DESCRIPTION),
-    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-    comments: Array.from({length: getRandomInteger(MIN_COMMENTS, MAX_COMMENTS)}, ()=> createComment())
-  };
-}
+const createObject = (postId) => ({
+  id: postId,
+  url: `photos/${postId}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comments: Array.from({ length: getRandomInteger(MIN_COMMENTS, MAX_COMMENTS) }, () => createComment())
+});
 
-function getPhoto(){
+const getPhoto = () => {
   const newId = createIdGenerator();
   return Array.from({ length: COUNT_PHOTO }, () => createObject(newId()));
-}
+};
+
 const posts = getPhoto();
 
-export {posts};
+export { posts };
